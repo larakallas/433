@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Information</title>
+</head>
+<body>
+    <h1>Customer Information</h1>
+    
+    <h2>Customer Details:</h2>
+    <ul>
+        <li><strong>Customer ID:</strong> {{ customer[0] }}</li>
+        <li><strong>First Name:</strong> {{ customer[1] }}</li>
+        <li><strong>Last Name:</strong> {{ customer[2] }}</li>
+        <li><strong>Email:</strong> {{ customer[3] }}</li>
+    </ul>
+
+    <h2>Orders:</h2>
+    <table border="1">
+        <tr>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Price</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order[0] }}</td>
+            <td>{{ order[2] }}</td>
+            <td>{{ order[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -8,10 +8,10 @@ app = Flask(__name__)
 def connect_to_db():
         connection = psycopg2.connect(
             user="postgres",
-            password="lara",
+            password="j",
             host="127.0.0.1",
             port="5432",
-            database="project-433"
+            database="project"
         )
         return connection
 def fetch_table_data(connection, table_name):
@@ -51,6 +51,34 @@ def display_all_data():
 
     connection.close()
     return render_template('display_tables.html', book=book, book_headers=book_headers, author=author, author_headers=author_headers, publisher=publisher, publisher_headers=publisher_headers, customers=customers, customers_headers=customers_headers, orders=orders, orders_headers=orders_headers, order_items=order_items, order_items_headers=order_items_headers, bookstore_storage=bookstore_storage, bookstore_storage_headers=bookstore_storage_headers, order_contains=order_contains, order_contains_headers=order_contains_headers, staff=staff, staff_headers=staff_headers)
+
+
+
+@app.route('/display_author_info')
+def display_author_info():
+    author_id = request.args.get('author_id')
+    if not author_id:
+        return "Author ID is required", 400
+    
+    connection = connect_to_db()
+    author_info_query = f"SELECT * FROM authors WHERE authorID = %s"
+    cursor = connection.cursor()
+    cursor.execute(author_info_query, (author_id,))
+    author_info = cursor.fetchone()
+    cursor.close()
+    
+    if not author_info:
+        return f"No author found with ID {author_id}", 404
+   
+    books_query = f"SELECT * FROM books WHERE authorID = %s"
+    cursor = connection.cursor()
+    cursor.execute(books_query, (author_id,))
+    books = cursor.fetchall()
+    cursor.close()
+    
+    connection.close()
+    
+    return render_template('display_author_info.html', author=author_info, books=books)
 
 if __name__ == '__main__':
     app.run(debug=True)

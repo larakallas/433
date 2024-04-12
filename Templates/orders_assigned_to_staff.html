@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Assigned to Staff</title>
+</head>
+<body>
+    <h1>Orders Assigned to Staff</h1>
+    <h2>Staff ID: {{ staff_id }}</h2>
+
+    {% if orders %}
+        {% for order in orders %}
+            <p>Staff: {{ order[4] }}, {{ order[5] }} is assigned to Order ID: {{ order[0] }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No orders assigned to this staff member.</p>
+    {% endif %}
+</body>
+</html>

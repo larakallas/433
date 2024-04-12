@@ -127,6 +127,22 @@ def insert_customer():
             return f"Customer with ID {customer_id} inserted successfully"
         except psycopg2.Error as error:
             return f"Error inserting customer: {error}", 500
+@app.route('/orders_assigned_to_staff', methods=['GET'])
+def orders_assigned_to_staff():
+    staff_id = request.args.get('staff_id')
+
+    connection = connect_to_db()
+    cursor = connection.cursor()
+
+    query = "SELECT o.orderID, o.customerID, o.orderdate, o.price, s.first_name, s.last_name FROM Orders o JOIN staff s ON o.StaffID = s.staffID WHERE o.StaffID = %s"
+    cursor.execute(query, (staff_id,))
+    orders = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+
+    return render_template('orders_assigned_to_staff.html', orders=orders)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

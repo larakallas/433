@@ -8,10 +8,10 @@ app = Flask(__name__)
 def connect_to_db():
         connection = psycopg2.connect(
             user="postgres",
-            password="lara",
+            password="j",
             host="127.0.0.1",
             port="5432",
-            database="project-433"
+            database="project"
         )
         return connection
 def fetch_table_data(connection, table_name):
@@ -142,6 +142,28 @@ def orders_assigned_to_staff():
     connection.close()
 
     return render_template('orders_assigned_to_staff.html', orders=orders)
+
+@app.route('/book_storage')
+def book_storage():
+    book_id = request.args.get('book_id')
+    if not book_id:
+        return "Book ID is required", 400
+    
+    connection = connect_to_db()
+    
+
+    book_storage_query = "SELECT * FROM book_storage WHERE bookID = %s"
+    cursor = connection.cursor()
+    cursor.execute(book_storage_query, (book_id,))
+    book_storage_info = cursor.fetchall()
+    
+    cursor.close()
+    connection.close()
+    
+    if not book_storage_info:
+        return f"No book storage found for book with ID {book_id}", 404
+   
+    return render_template('book_storage.html', book_storage_info=book_storage_info)
 
 
 if __name__ == '__main__':

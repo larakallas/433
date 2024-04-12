@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Display All Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+        }
+        h2 {
+            margin-top: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Display All Data</h1>
+    
+    <!-- Customers Table -->
+    <h2>Customers</h2>
+    <table border="1">
+        <tr>
+            <!-- Headers -->
+            {% for header in customers_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+        <!-- Rows -->
+        {% for row in customers %}
+            <tr>
+                {% for cell in row %}
+                    <td>{{ cell if cell is not none else 'null' }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Orders Table -->
+    <h2>Orders</h2>
+    <table border="1">
+        <tr>
+            <!-- Headers -->
+            {% for header in orders_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+        <!-- Rows -->
+        {% for row in orders %}
+            <tr>
+                {% for cell in row %}
+                    <td>{{ cell if cell is not none else 'null' }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Authors Table -->
+    <h2>Authors</h2>
+    <table border="1">
+        <tr>
+            <!-- Headers -->
+            {% for header in author_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+        <!-- Rows -->
+        {% for row in author %}
+            <tr>
+                {% for cell in row %}
+                    <td>{{ cell if cell is not none else 'null' }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Publisher Table -->
+    <h2>Publisher</h2>
+    <table border="1">
+        <tr>
+            <!-- Headers -->
+            {% for header in publisher_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+        <!-- Rows -->
+        {% for row in publisher %}
+            <tr>
+                {% for cell in row %}
+                    <td>{{ cell if cell is not none else 'null' }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Staff Table -->
+    <h2>Staff</h2>
+    <table border="1">
+        <tr>
+            <!-- Headers -->
+            {% for header in staff_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+        <!-- Rows -->
+        {% for row in staff %}
+            <tr>
+                {% for cell in row %}
+                    <td>{{ cell if cell is not none else 'null' }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Books Table -->
+    <h2>Books</h2>
+    <table border="1">
+        <tr>
+            <!-- Headers -->
+            {% for header in book_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+        <!-- Rows -->
+        {% for row in book %}
+            <tr>
+                {% for cell in row %}
+                    <td>{{ cell if cell is not none else 'null' }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Order Items Table -->
+    <h2>Order Items</h2>
+    <table border="1">
+        <tr>
+            <!-- Headers -->
+            {% for header in order_items_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+        <!-- Rows -->
+        {% for row in order_items %}
+            <tr>
+                {% for cell in row %}
+                    <td>{{ cell if cell is not none else 'null' }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Book Storage Table -->
+    <h2>Book Storage</h2>
+    <table border="1">
+        <tr>
+            <!-- Headers -->
+            {% for header in bookstore_storage_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+        <!-- Rows -->
+        {% for row in bookstore_storage %}
+            <tr>
+                {% for cell in row %}
+                    <td>{{ cell if cell is not none else 'null' }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Order Contains Table -->
+    <h2>Order Contains</h2>
+    <table border="1">
+        <tr>
+            <!-- Headers -->
+            {% for header in order_contains_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+        <!-- Rows -->
+        {% for row in order_contains %}
+            <tr>
+                {% for cell in row %}
+                    <td>{{ cell if cell is not none else 'null' }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    
+</body>
+</html>

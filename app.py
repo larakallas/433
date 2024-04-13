@@ -29,12 +29,23 @@ def fetch_table_data(connection, table_name):
         print(f"Error fetching data from {table_name} table:", error)
         return [], []
 
-
 @app.route('/')
 def index():
     connection = connect_to_db()
-    return render_template('index.html')
+    
+    cursor = connection.cursor()
+    cursor.execute("SELECT COUNT(*) FROM customers")
+    num_customers = cursor.fetchone()[0]
+    
+    cursor.execute("SELECT COUNT(*) FROM books")
+    num_books = cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM orders")
+    num_orders = cursor.fetchone()[0]
 
+    cursor.close()
+    connection.close()
+    
+    return render_template('index.html', num_customers=num_customers, num_books=num_books, num_orders=num_orders)
 
 @app.route('/display_all_data')
 def display_all_data():

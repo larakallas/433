@@ -8,7 +8,7 @@ app = Flask(__name__)
 def connect_to_db():
         connection = psycopg2.connect(
             user="postgres",
-            password="lara",
+            password="j",
             host="127.0.0.1",
             port="5432",
             database="project-433"
@@ -72,21 +72,23 @@ def display_author_info():
         return "Author ID is required", 400
     
     connection = connect_to_db()
-    author_info_query = f"SELECT * FROM authors WHERE authorID = %s"
     cursor = connection.cursor()
+    
+    # Fetch author information
+    author_info_query = "SELECT * FROM authors WHERE authorID = %s"
     cursor.execute(author_info_query, (author_id,))
     author_info = cursor.fetchone()
-    cursor.close()
     
     if not author_info:
+        cursor.close()
+        connection.close()
         return f"No author found with ID {author_id}", 404
    
-    books_query = f"SELECT * FROM books WHERE authorID = %s"
-    cursor = connection.cursor()
+    books_query = "SELECT b.*, p.Name AS publisher_name FROM books b JOIN publisher p ON b.PublisherID = p.PublisherID WHERE b.authorID = %s"
     cursor.execute(books_query, (author_id,))
     books = cursor.fetchall()
-    cursor.close()
     
+    cursor.close()
     connection.close()
     
     return render_template('display_author_info.html', author=author_info, books=books)
@@ -289,6 +291,33 @@ def update_staff_id():
             return f"Staff with ID {old_staff_id} updated to {new_staff_id} successfully"
         except psycopg2.Error as error:
             return f"Error updating staff ID: {error}", 500
+
+@app.route('/update_book_price', methods=['POST'])
+def update_book_price():
+    if request.method == 'POST':
+        book_id = request.form['book_id']
+        new_price = request.form['new_price']
+
+        if not book_id or not new_price:
+            return "Both book ID and new price are required", 400
+
+        try:
+            connection = connect_to_db()
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM books WHERE BookID = %s", (book_id,))
+            book = cursor.fetchone()
+            if not book:
+                return f"No book found with ID {book_id}", 404
+            cursor.execute("UPDATE books SET Price = %s WHERE BookID = %s",
+                           (new_price, book_id))
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+            return f"Price of book with ID {book_id} updated to {new_price} successfully"
+        except psycopg2.Error as error:
+            return f"Error updating book price: {error}", 500
 
 if __name__ == '__main__':
     app.run(debug=True)

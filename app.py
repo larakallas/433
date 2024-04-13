@@ -8,7 +8,7 @@ app = Flask(__name__)
 def connect_to_db():
         connection = psycopg2.connect(
             user="postgres",
-            password="j",
+            password="lara",
             host="127.0.0.1",
             port="5432",
             database="project-433"
@@ -319,5 +319,32 @@ def update_book_price():
         except psycopg2.Error as error:
             return f"Error updating book price: {error}", 500
 
+@app.route('/update_order_price', methods=['POST'])
+def update_order_price():
+    if request.method == 'POST':
+        order_id = request.form['order_id']
+        new_price = request.form['new_price']
+
+        if not order_id or not new_price:
+            return "Both order ID and new price are required", 400
+
+        try:
+            connection = connect_to_db()
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM orders WHERE OrderID = %s", (order_id,))
+            order = cursor.fetchone()
+            if not order:
+                return f"No order found with ID {order_id}", 404
+            cursor.execute("UPDATE orders SET Price = %s WHERE OrderID = %s",
+                           (new_price, order_id))
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+            return f"Price of order with ID {order_id} updated to {new_price} successfully"
+        except psycopg2.Error as error:
+            return f"Error updating order price: {error}", 500
+        
 if __name__ == '__main__':
     app.run(debug=True)

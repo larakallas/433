@@ -14,6 +14,12 @@
         <input type="text" id="author_id" name="author_id">
         <input type="submit" value="Submit">
     </form>
+    <body>
+    <h1>Number of books and customers:</h1>
+        <p>Number of customers: {{ num_customers }}</p>
+        <p>Number of books: {{ num_books }}</p>
+        <p>Number of orders: {{ num_orders }}</p>
+    </body>
 
     <h2>Display Customer Information</h2>
     <form action="/search_customer" method="get">

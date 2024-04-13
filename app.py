@@ -11,7 +11,7 @@ def connect_to_db():
             password="j",
             host="127.0.0.1",
             port="5432",
-            database="project"
+            database="project-433"
         )
         return connection
 def fetch_table_data(connection, table_name):
@@ -175,6 +175,63 @@ def book_storage():
         return f"No book storage found for book with ID {book_id}", 404
    
     return render_template('book_storage.html', book_storage_info=book_storage_info)
+
+@app.route('/delete_customer', methods=['POST'])
+def delete_customer():
+    if request.method == 'POST':
+        first_name = request.form['first_name']
+        last_name = request.form['last_name']
+
+        if not first_name or not last_name:
+            return "Both first name and last name are required for deletion", 400
+
+        try:
+            connection = connect_to_db()
+            cursor = connection.cursor()
+            
+            # Check if the customer exists
+            cursor.execute("SELECT * FROM customers WHERE FirstName = %s AND LastName = %s", (first_name, last_name))
+            customer = cursor.fetchone()
+            if not customer:
+                return f"No customer found with name {first_name} {last_name}", 404
+            
+            # Delete the customer
+            cursor.execute("DELETE FROM customers WHERE FirstName = %s AND LastName = %s", (first_name, last_name))
+            connection.commit()
+            
+            cursor.close()
+            connection.close()
+            
+            return f"Customer {first_name} {last_name} deleted successfully"
+        except psycopg2.Error as error:
+            return f"Error deleting customer: {error}", 500
+@app.route('/delete_book', methods=['POST'])
+def delete_book():
+    if request.method == 'POST':
+        title = request.form['title']
+
+        if not title:
+            return "Book title is required for deletion", 400
+
+        try:
+            connection = connect_to_db()
+            cursor = connection.cursor()
+            
+            cursor.execute("SELECT * FROM books WHERE title = %s", (title,))
+            book = cursor.fetchone()
+            if not book:
+                return f"No book found with title {title}", 404
+            
+            cursor.execute("DELETE FROM books WHERE title = %s", (title,))
+            connection.commit()
+            
+            cursor.close()
+            connection.close()
+            
+            return f"Book '{title}' deleted successfully"
+        except psycopg2.Error as error:
+            return f"Error deleting book: {error}", 500
+
 
 
 if __name__ == '__main__':

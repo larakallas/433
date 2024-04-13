@@ -8,7 +8,7 @@ app = Flask(__name__)
 def connect_to_db():
         connection = psycopg2.connect(
             user="postgres",
-            password="j",
+            password="lara",
             host="127.0.0.1",
             port="5432",
             database="project-433"
@@ -231,8 +231,64 @@ def delete_book():
             return f"Book '{title}' deleted successfully"
         except psycopg2.Error as error:
             return f"Error deleting book: {error}", 500
+@app.route('/update_customer_id', methods=['POST'])
+def update_customer_id():
+    if request.method == 'POST':
+        old_customer_id = request.form['old_customer_id']
+        new_customer_id = request.form['new_customer_id']
+
+        if not old_customer_id or not new_customer_id:
+            return "Both old and new CustomerIDs are required", 400
+
+        try:
+            connection = connect_to_db()
+            cursor = connection.cursor()
+
+            # Check if the old customer ID exists
+            cursor.execute("SELECT * FROM customers WHERE CustomerID = %s", (old_customer_id,))
+            customer = cursor.fetchone()
+            if not customer:
+                return f"No customer found with ID {old_customer_id}", 404
+
+            # Update the customer ID
+            cursor.execute("UPDATE customers SET CustomerID = %s WHERE CustomerID = %s",
+                           (new_customer_id, old_customer_id))
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+            return f"Customer with ID {old_customer_id} updated to {new_customer_id} successfully"
+        except psycopg2.Error as error:
+            return f"Error updating customer ID: {error}", 500
 
 
+@app.route('/update_staff_id', methods=['POST'])
+def update_staff_id():
+    if request.method == 'POST':
+        old_staff_id = request.form['old_staff_id']
+        new_staff_id = request.form['new_staff_id']
+
+        if not old_staff_id or not new_staff_id:
+            return "Both old and new StaffIDs are required", 400
+
+        try:
+            connection = connect_to_db()
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM staff WHERE StaffID = %s", (old_staff_id,))
+            staff = cursor.fetchone()
+            if not staff:
+                return f"No staff found with ID {old_staff_id}", 404
+            cursor.execute("UPDATE staff SET StaffID = %s WHERE StaffID = %s",
+                           (new_staff_id, old_staff_id))
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+            return f"Staff with ID {old_staff_id} updated to {new_staff_id} successfully"
+        except psycopg2.Error as error:
+            return f"Error updating staff ID: {error}", 500
 
 if __name__ == '__main__':
     app.run(debug=True)

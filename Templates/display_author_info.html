@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Author Info</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css">
+
 </head>
 <body>
     <h1>Author Information</h1>
@@ -12,7 +14,7 @@
     <h2>Books Written by {{ author[1] }} {{ author[2] }}</h2>
     <ul>
     {% for book in books %}
-        <li>{{ book[2] }} (ISBN: {{ book[1] }})</li>
+        <li>{{ book[2] }} (ISBN: {{ book[1] }}) - Publisher: {{ book[7] }}</li>
     {% endfor %}
     </ul>
 </body>

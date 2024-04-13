@@ -8,7 +8,7 @@ app = Flask(__name__)
 def connect_to_db():
         connection = psycopg2.connect(
             user="postgres",
-            password="j",
+            password="lara",
             host="127.0.0.1",
             port="5432",
             database="project-433"
@@ -345,6 +345,7 @@ def update_order_price():
             return f"Price of order with ID {order_id} updated to {new_price} successfully"
         except psycopg2.Error as error:
             return f"Error updating order price: {error}", 500
-        
+
+
 if __name__ == '__main__':
     app.run(debug=True)

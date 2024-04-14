@@ -103,5 +103,33 @@
         <label for="new_price">New Price:</label>
         <input type="text" id="new_price" name="new_price" required><br><br>
         <input type="submit" value="Update Order Price">
+    </form>
+    <h2>Update Order Date</h2>
+
+    <form action="/update_order_date" method="post">
+        <label for="order_id">Order ID:</label>
+        <input type="text" id="order_id" name="order_id" required><br><br>
+        
+        <label for="new_date">New Date:</label>
+        <input type="date" id="new_date" name="new_date" required><br><br>
+        
+        <input type="submit" value="Update Order Date">
+    </form>
+    <h2>Update Order Staff ID</h2>
+    <form action="update_order_staff_id" method="post">
+        <label for="order_id">Order ID:</label>
+        <input type="text" id="order_id" name="order_id" required><br><br>
+        <label for="new_staff_id">New Staff ID:</label>
+        <input type="text" id="new_staff_id" name="new_staff_id" required><br><br>
+        <input type="submit" value="Update Order Staff ID">
+    </form>
+    <h2>Update Order Customer ID</h2>
+    <form action="update_order_customer_id" method="post">
+        <label for="order_id">Order ID:</label>
+        <input type="text" id="order_id" name="order_id" required><br><br>
+        <label for="new_customer_id">New Customer ID:</label>
+        <input type="text" id="new_customer_id" name="new_customer_id" required><br><br>
+        <input type="submit" value="Update Order Customer ID">
+    </form>
 </body>
 </html>

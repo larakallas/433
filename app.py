@@ -4,11 +4,12 @@ from datetime import date
 
 
 app = Flask(__name__)
+app.secret_key = 'your_secret_key_here'
 
 def connect_to_db():
         connection = psycopg2.connect(
             user="postgres",
-            password="lara",
+            password="l",
             host="127.0.0.1",
             port="5432",
             database="project-433"
@@ -346,6 +347,88 @@ def update_order_price():
         except psycopg2.Error as error:
             return f"Error updating order price: {error}", 500
 
+@app.route('/update_order_date', methods=['POST'])
+def update_order_date():
+    if request.method == 'POST':
+        order_id = request.form['order_id']
+        new_date = request.form['new_date']
 
+        if not order_id or not new_date:
+            return "Both order ID and new date are required", 400
+
+        try:
+            connection = connect_to_db()
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM orders WHERE OrderID = %s", (order_id,))
+            order = cursor.fetchone()
+            if not order:
+                return f"No order found with ID {order_id}", 404
+            cursor.execute("UPDATE orders SET OrderDate = %s WHERE OrderID = %s",
+                           (new_date, order_id))
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+            return f"Date of order with ID {order_id} updated to {new_date} successfully"
+        except psycopg2.Error as error:
+            return f"Error updating order date: {error}", 500
+
+@app.route('/update_order_staff_id', methods=['POST'])
+def update_order_staff_id():
+    if request.method == 'POST':
+        order_id = request.form['order_id']
+        new_staff_id = request.form['new_staff_id']
+
+        if not order_id or not new_staff_id:
+            return "Both order ID and new staff ID are required", 400
+
+        try:
+            connection = connect_to_db()
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM orders WHERE OrderID = %s", (order_id,))
+            order = cursor.fetchone()
+            if not order:
+                return f"No order found with ID {order_id}", 404
+            cursor.execute("UPDATE orders SET StaffID = %s WHERE OrderID = %s",
+                           (new_staff_id, order_id))
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+            return f"Staff ID of order with ID {order_id} updated to {new_staff_id} successfully"
+        except psycopg2.Error as error:
+            return f"Error updating order staff ID: {error}", 500
+
+
+@app.route('/update_order_customer_id', methods=['POST'])
+def update_order_customer_id():
+    if request.method == 'POST':
+        order_id = request.form['order_id']
+        new_customer_id = request.form['new_customer_id']
+
+        if not order_id or not new_customer_id:
+            return "Both order ID and new customer ID are required", 400
+
+        try:
+            connection = connect_to_db()
+            cursor = connection.cursor()
+            cursor.execute("SELECT * FROM orders WHERE OrderID = %s", (order_id,))
+            order = cursor.fetchone()
+            if not order:
+                return f"No order found with ID {order_id}", 404
+            cursor.execute("UPDATE orders SET CustomerID = %s WHERE OrderID = %s",
+                           (new_customer_id, order_id))
+            connection.commit()
+
+            cursor.close()
+            connection.close()
+
+            return f"Customer ID of order with ID {order_id} updated to {new_customer_id} successfully"
+        except psycopg2.Error as error:
+            return f"Error updating order customer ID: {error}", 500
+
+        
 if __name__ == '__main__':
     app.run(debug=True)

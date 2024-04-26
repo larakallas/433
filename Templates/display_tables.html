@@ -110,23 +110,24 @@
     </table>
 
     <!-- Authors Table -->
-    <h2>Authors</h2>
-    <table border="1">
+<h2>Authors</h2>
+<table border="1">
+    <tr>
+        <!-- Headers -->
+        {% for header in authors_headers %}
+            <th>{{ header }}</th>
+        {% endfor %}
+    </tr>
+    <!-- Rows -->
+    {% for row in authors %}
         <tr>
-            <!-- Headers -->
-            {% for header in author_headers %}
-                <th>{{ header }}</th>
+            {% for cell in row %}
+                <td>{{ cell }}</td>
             {% endfor %}
         </tr>
-        <!-- Rows -->
-        {% for row in author %}
-            <tr>
-                {% for cell in row %}
-                    <td>{{ cell }}</td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-    </table>
+    {% endfor %}
+</table>
+
 
     <!-- Publisher Table -->
     <h2>Publisher</h2>
@@ -171,12 +172,12 @@
     <table border="1">
         <tr>
             <!-- Headers -->
-            {% for header in book_headers %}
+            {% for header in books_headers %}
                 <th>{{ header }}</th>
             {% endfor %}
         </tr>
         <!-- Rows -->
-        {% for row in book %}
+        {% for row in books %}
             <tr>
                 {% for cell in row %}
                     <td>{{ cell }}</td>
@@ -186,16 +187,16 @@
     </table>
 
     <!-- Order Items Table -->
-    <h2>Order Items</h2>
+    <h2>writes</h2>
     <table border="1">
         <tr>
             <!-- Headers -->
-            {% for header in order_items_headers %}
+            {% for header in writes_headers %}
                 <th>{{ header }}</th>
             {% endfor %}
         </tr>
         <!-- Rows -->
-        {% for row in order_items %}
+        {% for row in writes %}
             <tr>
                 {% for cell in row %}
                     <td>{{ cell }}</td>
@@ -215,6 +216,24 @@
         </tr>
         <!-- Rows -->
         {% for row in bookstore_storage %}
+            <tr>
+                {% for cell in row %}
+                    <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </table>
+    <!-- Stored Table -->
+    <h2>Stored</h2>
+    <table border="1">
+        <tr>
+            <!-- Headers -->
+            {% for header in stored_headers %}
+                <th>{{ header }}</th>
+            {% endfor %}
+        </tr>
+        <!-- Rows -->
+        {% for row in stored %}
             <tr>
                 {% for cell in row %}
                     <td>{{ cell }}</td>

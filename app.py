@@ -9,7 +9,7 @@ app.secret_key = 'your_secret_key_here'
 def connect_to_db():
         connection = psycopg2.connect(
             user="postgres",
-            password="jocelyne#45",
+            password="j",
             host="127.0.0.1",
             port="5432",
             database="project"
@@ -86,7 +86,7 @@ def display_author_info():
         connection.close()
         return f"No author found with ID {author_id}", 404
    
-    books_query = "SELECT b.*, p.Name AS publisher_name FROM books b JOIN publisher p ON b.PublisherID = p.PublisherID WHERE b.authorID = %s"
+    books_query = "SELECT b.*, p.Name AS publisher_name FROM books b JOIN publisher p ON b.PublisherID = p.PublisherID JOIN writes w ON b.bookID = w.bookID WHERE w.authorID = %s"
     cursor.execute(books_query, (author_id,))
     books = cursor.fetchall()
     

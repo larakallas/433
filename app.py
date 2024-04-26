@@ -93,7 +93,8 @@ def display_author_info():
     cursor.close()
     connection.close()
     
-    return render_template('display_author_info.html', author=author_info, books=books)@app.route('/search_customer')
+    return render_template('display_author_info.html', author=author_info, books=books)
+@app.route('/search_customer')
 def search_customer():
     customer_id = request.args.get('customer_id')
     if not customer_id:

@@ -9,10 +9,10 @@ app.secret_key = 'your_secret_key_here'
 def connect_to_db():
         connection = psycopg2.connect(
             user="postgres",
-            password="l",
+            password="jocelyne#45",
             host="127.0.0.1",
             port="5432",
-            database="project-433"
+            database="project"
         )
         return connection
 def fetch_table_data(connection, table_name):
@@ -51,18 +51,19 @@ def index():
 @app.route('/display_all_data')
 def display_all_data():
     connection = connect_to_db()
-    book, book_headers = fetch_table_data(connection, "books")
-    author, author_headers = fetch_table_data(connection, "authors")
+    books, books_headers = fetch_table_data(connection, "books")
+    authors, authors_headers = fetch_table_data(connection, "authors")
     publisher, publisher_headers = fetch_table_data(connection, "publisher")    
     customers, customers_headers = fetch_table_data(connection, "customers")
     orders, orders_headers = fetch_table_data(connection, "orders")
-    order_items, order_items_headers = fetch_table_data(connection, "order_item")
+    writes, writes_headers = fetch_table_data(connection, "writes")
     bookstore_storage, bookstore_storage_headers = fetch_table_data(connection, "book_storage")
     order_contains, order_contains_headers = fetch_table_data(connection, "order_contains")
     staff, staff_headers = fetch_table_data(connection, "staff")
+    stored,stored_headers=fetch_table_data(connection,"stored")
 
     connection.close()
-    return render_template('display_tables.html', book=book, book_headers=book_headers, author=author, author_headers=author_headers, publisher=publisher, publisher_headers=publisher_headers, customers=customers, customers_headers=customers_headers, orders=orders, orders_headers=orders_headers, order_items=order_items, order_items_headers=order_items_headers, bookstore_storage=bookstore_storage, bookstore_storage_headers=bookstore_storage_headers, order_contains=order_contains, order_contains_headers=order_contains_headers, staff=staff, staff_headers=staff_headers)
+    return render_template('display_tables.html', books=books, books_headers=books_headers, authors=authors, authors_headers=authors_headers, publisher=publisher, publisher_headers=publisher_headers, customers=customers, customers_headers=customers_headers, orders=orders, orders_headers=orders_headers, writes=writes, writes_headers=writes_headers, bookstore_storage=bookstore_storage, bookstore_storage_headers=bookstore_storage_headers, order_contains=order_contains, order_contains_headers=order_contains_headers, staff=staff, staff_headers=staff_headers,stored=stored,stored_headers=stored_headers)
 
 
 

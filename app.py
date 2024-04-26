@@ -9,7 +9,7 @@ app.secret_key = 'your_secret_key_here'
 def connect_to_db():
         connection = psycopg2.connect(
             user="postgres",
-            password="j",
+            password="lara",
             host="127.0.0.1",
             port="5432",
             database="project"
@@ -47,6 +47,10 @@ def index():
     connection.close()
     
     return render_template('index.html', num_customers=num_customers, num_books=num_books, num_orders=num_orders)
+
+@app.route('/view')
+def view():
+    return display_all_data()
 
 @app.route('/display_all_data')
 def display_all_data():
@@ -141,10 +145,17 @@ def insert_customer():
             connection.close()
             return f"Customer with ID {customer_id} inserted successfully"
         except psycopg2.Error as error:
-            return f"Error inserting customer: {error}", 500
+            if "duplicate key value violates unique constraint" in str(error):
+                return f"Error inserting customer: There is already a customer with ID {customer_id}. Please choose a different ID.", 400
+            else:
+                return f"Error inserting customer: {error}", 500
 @app.route('/orders_assigned_to_staff', methods=['GET'])
 def orders_assigned_to_staff():
     staff_id = request.args.get('staff_id')
+
+    # Check if staff_id is a valid integer
+    if not staff_id or not staff_id.isdigit():
+        return "Invalid staff ID. Please enter a valid integer staff ID."
 
     connection = connect_to_db()
     cursor = connection.cursor()
@@ -156,7 +167,11 @@ def orders_assigned_to_staff():
     cursor.close()
     connection.close()
 
+    if not orders:
+        return "No orders assigned to this staff member."
+
     return render_template('orders_assigned_to_staff.html', orders=orders)
+
 
 @app.route('/book_storage')
 def book_storage():

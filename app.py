@@ -86,15 +86,14 @@ def display_author_info():
         connection.close()
         return f"No author found with ID {author_id}", 404
    
-    books_query = "SELECT b.*, p.Name AS publisher_name FROM books b JOIN publisher p ON b.PublisherID = p.PublisherID WHERE b.authorID = %s"
+    books_query = "SELECT b.*, p.Name AS publisher_name FROM books b JOIN publisher p ON b.PublisherID = p.PublisherID JOIN writes w ON b.bookID = w.bookID WHERE w.authorID = %s"
     cursor.execute(books_query, (author_id,))
     books = cursor.fetchall()
     
     cursor.close()
     connection.close()
     
-    return render_template('display_author_info.html', author=author_info, books=books)
-@app.route('/search_customer')
+    return render_template('display_author_info.html', author=author_info, books=books)@app.route('/search_customer')
 def search_customer():
     customer_id = request.args.get('customer_id')
     if not customer_id:
